@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
+import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
 
 main() => runApp(MyApp());
 
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Quicksand',
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
