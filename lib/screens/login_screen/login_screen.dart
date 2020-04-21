@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       if (token != null) {
         PreferenceHelper.saveToken(token);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => HomeScreen(),

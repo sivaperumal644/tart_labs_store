@@ -22,10 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Quicksand',
-        scaffoldBackgroundColor: Colors.white,
-      ),
+      theme: ThemeData(fontFamily: 'Quicksand'),
       home: isAuthenticated ? HomeScreen() : LoginScreen(),
     );
   }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tart_labs_store/components/app_list_item.dart';
 import 'package:tart_labs_store/constants/colors.dart';
+import 'package:tart_labs_store/screens/home_screen/home_screen_bloc.dart';
+import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
+import 'package:tart_labs_store/utils/preference_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,12 +12,41 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    homeScreenBloc.getApps();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
       drawer: drawer(),
-      body: Container(),
+      body: StreamBuilder(
+        stream: homeScreenBloc.getAppList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            return Container(
+              padding: EdgeInsets.only(top: 16),
+              child: ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: AppListItem(app: snapshot.data[index]),
+                  );
+                },
+              ),
+            );
+          }
+          return Container();
+        },
+      ),
     );
   }
 
@@ -51,6 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               selectedIndex = 1;
             });
+            PreferenceHelper.clearToken();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginScreen(),
+              ),
+            );
           }),
         ],
       ),
@@ -100,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: isSelected ? Colors.white : Colors.black,
         ),
         title: Text(
-          'My Apps',
+          title,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 14,

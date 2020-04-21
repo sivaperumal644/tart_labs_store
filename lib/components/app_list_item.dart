@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:tart_labs_store/constants/colors.dart';
+import 'package:tart_labs_store/models/app.dart';
+import 'package:tart_labs_store/screens/app_detail_screen.dart';
 
 class AppListItem extends StatelessWidget {
-  final String imageUrl;
-  final String appName;
-  final String date;
-  final Function onPressed;
+  final App app;
 
   const AppListItem({
-    this.imageUrl,
-    this.appName,
-    this.date,
-    this.onPressed,
+    this.app,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AppDetailScreen(app: app)),
+        );
+      },
       borderRadius: BorderRadius.circular(4),
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(4),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 4,
+              color: Colors.black.withOpacity(0.33),
+            )
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.asset(
-              imageUrl,
+            Image.network(
+              app.appLogo,
               width: 67,
               height: 67,
               fit: BoxFit.fill,
@@ -38,11 +46,11 @@ class AppListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  appName,
+                  app.appName,
                   style: TextStyle(fontSize: 16),
                 ),
                 Text(
-                  date,
+                  app.createdAt,
                   style: TextStyle(
                     color: Color(0xff777777),
                     fontSize: 12,
@@ -51,17 +59,17 @@ class AppListItem extends StatelessWidget {
               ],
             ),
             Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(
+              child: Container(
+                height: 65,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(
                     Icons.arrow_forward_ios,
                     color: FADED_RED,
                   ),
-                  onPressed: onPressed,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
