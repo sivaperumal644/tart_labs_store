@@ -16,16 +16,14 @@ class AppsRepository {
         options: Options(
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
-            HttpHeaders.authorizationHeader: 'Bearer ' + token.accessToken,
+            HttpHeaders.authorizationHeader: 'Bearer ' + token,
           },
         ),
       );
       var result = response.data;
       List apps = result['apps'];
       appList = apps.map((app) => App.fromJson(app)).toList();
-      print(appList.length);
     } catch (error) {
-      print(error);
     }
     return appList;
   }

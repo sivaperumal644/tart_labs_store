@@ -1,25 +1,22 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'token.g.dart';
-
-@JsonSerializable()
 class Token {
-  @JsonKey(name: 'token_type')
-  String tokenType;
-  @JsonKey(name: 'expires_in')
-  int expiresIn;
-  @JsonKey(name: 'access_token')
-  String accessToken;
-  @JsonKey(name: 'refresh_token')
-  String refreshToken;
+  final String tokenType;
+  final String accessToken;
+  final int expiresIn;
+  final String refreshToken;
 
   Token({
     this.tokenType,
-    this.expiresIn,
     this.accessToken,
+    this.expiresIn,
     this.refreshToken,
   });
 
-  factory Token.fromJson(Map<String, dynamic> map) => _$TokenFromJson(map);
-  Map<String, dynamic> toJson() => _$TokenToJson(this);
+  factory Token.fromJson(Map json) {
+    return Token(
+      tokenType: json['token_type'],
+      accessToken: json['access_token'],
+      expiresIn: json['expires_in'],
+      refreshToken: json['refresh_token']
+    );
+  }
 }

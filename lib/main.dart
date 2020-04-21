@@ -29,7 +29,6 @@ class _MyAppState extends State<MyApp> {
 
   getPref() async {
     final token = await PreferenceHelper.getToken();
-    print(token);
     if (token != null) {
       setState(() {
         isAuthenticated = true;

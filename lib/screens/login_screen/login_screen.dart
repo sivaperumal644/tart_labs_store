@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
 import 'package:tart_labs_store/models/token.dart';
-import 'package:tart_labs_store/repository/login_repository.dart';
+import 'package:tart_labs_store/repositories/login_repository.dart';
 import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
+import 'package:toast/toast.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  onLoginButtonPressed() async {
+  void onLoginButtonPressed() async {
     setState(() {
       isButtonClicked = true;
     });
@@ -111,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isButtonClicked = false;
       });
+      Toast.show("Invalid username or password", context);
     }
   }
 }

@@ -79,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               selectedIndex = 0;
             });
+            Navigator.pop(context);
           }),
           drawerItem(1, selectedIndex, 'Log out', Icons.arrow_forward, () {
             setState(() {
@@ -99,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget drawerHeader() {
     return Container(
-      height: 200,
+      height: 190,
       child: DrawerHeader(
         child: Column(
           children: <Widget>[

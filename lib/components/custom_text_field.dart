@@ -23,7 +23,7 @@ class CustomTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
         boxShadow: [
           BoxShadow(
-            color: Colors.black,
+            color: Colors.black.withOpacity(0.8),
             blurRadius: 4.0,
           )
         ],

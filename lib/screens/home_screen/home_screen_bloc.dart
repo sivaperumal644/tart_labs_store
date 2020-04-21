@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:tart_labs_store/models/app.dart';
-import 'package:tart_labs_store/repository/apps_repository.dart';
+import 'package:tart_labs_store/repositories/apps_repository.dart';
 
 class HomeScreenBloc {
   List<App> appList = [];

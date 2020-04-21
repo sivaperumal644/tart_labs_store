@@ -12,21 +12,33 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      color: FADED_RED,
-      onPressed: onPressed,
-      child: Text(
-        buttonText,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.8),
+            blurRadius: 2.0,
+          ),
+        ],
       ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4),
-        side: BorderSide(
-          width: 2,
-          color: PRIMARY_COLOR,
+      child: RaisedButton(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        color: FADED_RED,
+        onPressed: onPressed,
+        child: Text(
+          buttonText,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+          side: BorderSide(
+            width: 2,
+            color: PRIMARY_COLOR,
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
 import 'package:tart_labs_store/constants/colors.dart';
 import 'package:tart_labs_store/models/app.dart';
@@ -10,6 +11,8 @@ class AppDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime dateString = DateTime.parse(app.createdAt);
+    final String createdDate = new DateFormat.yMMMd().format(dateString);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: SECONDARY_COLOR,
@@ -31,7 +34,7 @@ class AppDetailScreen extends StatelessWidget {
         ),
         child: Column(
           children: <Widget>[
-            appTitleAndLogo(),
+            appTitleAndLogo(createdDate),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Row(
@@ -115,7 +118,7 @@ class AppDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget appTitleAndLogo() {
+  Widget appTitleAndLogo(date) {
     return Container(
       padding: EdgeInsets.all(16),
       child: Row(
@@ -136,7 +139,7 @@ class AppDetailScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                app.createdAt,
+                date,
                 style: TextStyle(
                   color: Color(0xff777777),
                   fontSize: 12,

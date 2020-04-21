@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tart_labs_store/constants/colors.dart';
 import 'package:tart_labs_store/models/app.dart';
 import 'package:tart_labs_store/screens/app_detail_screen.dart';
@@ -12,6 +13,8 @@ class AppListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime dateString = DateTime.parse(app.createdAt);
+    final String createdDate = new DateFormat.yMMMd().format(dateString);
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -50,7 +53,7 @@ class AppListItem extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
                 Text(
-                  app.createdAt,
+                  createdDate,
                   style: TextStyle(
                     color: Color(0xff777777),
                     fontSize: 12,
