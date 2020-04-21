@@ -112,6 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isButtonClicked = false;
       });
+      print(error);
       Toast.show("Invalid username or password", context);
     }
   }
