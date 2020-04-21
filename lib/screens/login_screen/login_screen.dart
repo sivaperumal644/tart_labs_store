@@ -1,6 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
+import 'package:tart_labs_store/models/token.dart';
+import 'package:tart_labs_store/repository/login_repository.dart';
+import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
+import 'package:tart_labs_store/utils/preference_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -8,6 +13,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final usernameController = new TextEditingController();
+  final passwordController = new TextEditingController();
+  bool isButtonClicked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     icon: Icons.mail_outline,
                     keyboardType: TextInputType.emailAddress,
+                    controller: usernameController,
                   ),
                   Container(height: 8),
                   Text(
@@ -55,13 +65,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     icon: Icons.lock_outline,
                     obscureText: true,
+                    controller: passwordController,
                   ),
                   Container(height: 30),
                   Center(
-                    child: PrimaryButton(
-                      buttonText: 'Sign In',
-                      onPressed: () {},
-                    ),
+                    child: isButtonClicked
+                        ? CupertinoActivityIndicator()
+                        : PrimaryButton(
+                            buttonText: 'Sign In',
+                            onPressed: onLoginButtonPressed,
+                          ),
                   )
                 ],
               ),
@@ -70,5 +83,34 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  onLoginButtonPressed() async {
+    setState(() {
+      isButtonClicked = true;
+    });
+    try {
+      Token token = await LoginRepository.login(
+        usernameController.text,
+        passwordController.text,
+      );
+      if (token != null) {
+        PreferenceHelper.saveToken(token);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ),
+        );
+      } else {
+        setState(() {
+          isButtonClicked = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        isButtonClicked = false;
+      });
+    }
   }
 }
