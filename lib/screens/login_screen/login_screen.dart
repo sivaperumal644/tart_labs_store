@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
 import 'package:tart_labs_store/models/token.dart';
@@ -21,66 +22,73 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg_1.jpg'),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: ListView(
-          children: <Widget>[
-            Container(height: 100),
-            Image.asset(
-              'assets/images/group_4.png',
-              width: 171,
-              height: 184,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg_1.jpg'),
+              fit: BoxFit.fill,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 42, vertical: 42),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Email',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Container(height: 6),
-                  CustomTextField(
-                    icon: Icons.mail_outline,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: usernameController,
-                  ),
-                  Container(height: 8),
-                  Text(
-                    'Password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Container(height: 6),
-                  CustomTextField(
-                    icon: Icons.lock_outline,
-                    obscureText: true,
-                    controller: passwordController,
-                  ),
-                  Container(height: 30),
-                  Center(
-                    child: isButtonClicked
-                        ? CupertinoActivityIndicator()
-                        : PrimaryButton(
-                            buttonText: 'Sign In',
-                            onPressed: onLoginButtonPressed,
-                          ),
-                  )
-                ],
+          ),
+          child: ListView(
+            children: <Widget>[
+              Container(height: 100),
+              Image.asset(
+                'assets/images/group_4.png',
+                width: 171,
+                height: 184,
               ),
-            )
-          ],
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 42, vertical: 42),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Email',
+                      style: GoogleFonts.quicksand(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(height: 6),
+                    CustomTextField(
+                      icon: Icons.mail_outline,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: usernameController,
+                    ),
+                    Container(height: 8),
+                    Text(
+                      'Password',
+                      style: GoogleFonts.quicksand(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Container(height: 6),
+                    CustomTextField(
+                      icon: Icons.lock_outline,
+                      obscureText: true,
+                      controller: passwordController,
+                    ),
+                    Container(height: 30),
+                    Center(
+                      child: isButtonClicked
+                          ? CupertinoActivityIndicator()
+                          : PrimaryButton(
+                              buttonText: 'Sign In',
+                              onPressed: onLoginButtonPressed,
+                            ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -112,7 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         isButtonClicked = false;
       });
-      print(error);
       Toast.show("Invalid username or password", context);
     }
   }

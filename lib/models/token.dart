@@ -1,8 +1,17 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'token.g.dart';
+
+@JsonSerializable()
 class Token {
-  final String tokenType;
-  final String accessToken;
-  final int expiresIn;
-  final String refreshToken;
+  @JsonKey(name: 'token_type')
+  String tokenType;
+  @JsonKey(name: 'access_token')
+  String accessToken;
+  @JsonKey(name: 'expires_in')
+  int expiresIn;
+  @JsonKey(name: 'refresh_token')
+  String refreshToken;
 
   Token({
     this.tokenType,
@@ -11,12 +20,6 @@ class Token {
     this.refreshToken,
   });
 
-  factory Token.fromJson(Map json) {
-    return Token(
-      tokenType: json['token_type'],
-      accessToken: json['access_token'],
-      expiresIn: json['expires_in'],
-      refreshToken: json['refresh_token']
-    );
-  }
+  factory Token.fromJson(Map<String, dynamic> map) => _$TokenFromJson(map);
+  Map<String, dynamic> toJson() => _$TokenToJson(this);
 }

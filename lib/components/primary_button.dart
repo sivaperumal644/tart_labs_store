@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/constants/colors.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -15,6 +16,7 @@ class PrimaryButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.red,
+        borderRadius: BorderRadius.circular(4),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.8),
@@ -28,9 +30,10 @@ class PrimaryButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           buttonText,
-          style: TextStyle(
+          style: GoogleFonts.quicksand(
             color: Colors.white,
             fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
         ),
         shape: RoundedRectangleBorder(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:tart_labs_store/constants/colors.dart';
 import 'package:tart_labs_store/models/app.dart';
@@ -50,13 +51,17 @@ class AppListItem extends StatelessWidget {
               children: <Widget>[
                 Text(
                   app.appName,
-                  style: TextStyle(fontSize: 16),
+                  style: GoogleFonts.quicksand(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
                 Text(
                   createdDate,
-                  style: TextStyle(
+                  style: GoogleFonts.quicksand(
                     color: Color(0xff777777),
                     fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],

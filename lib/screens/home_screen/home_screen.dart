@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/app_list_item.dart';
 import 'package:tart_labs_store/constants/colors.dart';
 import 'package:tart_labs_store/screens/home_screen/home_screen_bloc.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appBar(),
       drawer: drawer(),
+      backgroundColor: BG_COLOR,
       body: StreamBuilder(
         stream: homeScreenBloc.getAppList,
         builder: (context, snapshot) {
@@ -58,12 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <TextSpan>[
             TextSpan(
               text: 'Tart',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: GoogleFonts.exo2(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             TextSpan(
               text: 'labs Store',
-              style: TextStyle(fontSize: 24),
-            )
+              style: GoogleFonts.exo2(
+                fontSize: 24,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
           ],
         ),
       ),
@@ -75,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView(
         children: <Widget>[
           drawerHeader(),
+          Container(height: 10),
           drawerItem(0, selectedIndex, 'My Apps', Icons.layers, () {
             setState(() {
               selectedIndex = 0;
@@ -112,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(height: 24),
             Text(
               'Gowtham Raj',
-              style: TextStyle(
+              style: GoogleFonts.quicksand(
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -123,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/bg_1.jpg'),
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
         ),
       ),
@@ -140,12 +149,15 @@ class _HomeScreenState extends State<HomeScreen> {
           icon,
           color: isSelected ? Colors.white : Colors.black,
         ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-            color: isSelected ? Colors.white : Colors.black,
+        title: Align(
+          alignment: Alignment(-1.3, 0),
+          child: Text(
+            title,
+            style: GoogleFonts.quicksand(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              color: isSelected ? Colors.white : Colors.black,
+            ),
           ),
         ),
         onTap: onTap,
