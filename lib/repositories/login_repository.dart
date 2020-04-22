@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:tart_labs_store/constants/strings.dart';
 import 'package:tart_labs_store/models/token.dart';
 import 'package:tart_labs_store/utils/dio_helper.dart';

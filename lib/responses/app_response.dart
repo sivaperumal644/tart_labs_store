@@ -6,6 +6,7 @@ part 'app_response.g.dart';
 
 @JsonSerializable()
 class AppResponse extends BaseResponse{
+  
   @JsonKey(name: 'apps')
   List<App> apps;
 

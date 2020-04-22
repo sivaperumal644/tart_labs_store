@@ -3,15 +3,15 @@ import 'package:tart_labs_store/models/app.dart';
 import 'package:tart_labs_store/repositories/apps_repository.dart';
 import 'package:tart_labs_store/responses/app_response.dart';
 
-class HomeScreenBloc {
+class AppBloc {
   List<App> appList = [];
 
   final appController = StreamController<List<App>>.broadcast();
 
   Future getApps() async {
-    AppResponse app = await AppsRepository.getAllApps();
-    final apps = app.apps;
-    appController.sink.add(apps);
+    AppResponse appResponse = await AppsRepository.getAllApps();
+    final appList = appResponse.apps;
+    appController.sink.add(appList);
   }
 
   Stream<List<App>> get getAppList => appController.stream;
@@ -21,4 +21,4 @@ class HomeScreenBloc {
   }
 }
 
-final homeScreenBloc = HomeScreenBloc();
+final appBloc = AppBloc();

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:tart_labs_store/models/app.dart';
 import 'package:tart_labs_store/responses/app_response.dart';
 import 'package:tart_labs_store/utils/dio_helper.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';

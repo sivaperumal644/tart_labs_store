@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/app_list_item.dart';
 import 'package:tart_labs_store/constants/colors.dart';
-import 'package:tart_labs_store/screens/home_screen/home_screen_bloc.dart';
 import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
+
+import 'app_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    homeScreenBloc.getApps();
+    appBloc.getApps();
   }
 
   @override
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: drawer(),
       backgroundColor: BG_COLOR,
       body: StreamBuilder(
-        stream: homeScreenBloc.getAppList,
+        stream: appBloc.getAppList,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

@@ -14,8 +14,8 @@ class AppListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime dateString = DateTime.parse(app.createdAt);
-    final String createdDate = new DateFormat.yMMMd().format(dateString);
+    final DateTime createdDateTime = DateTime.parse(app.createdAt);
+    final String createdDate = new DateFormat.yMMMd().format(createdDateTime);
     return InkWell(
       onTap: () {
         Navigator.push(
