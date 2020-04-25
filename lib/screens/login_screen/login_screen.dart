@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
 import 'package:tart_labs_store/models/token.dart';
 import 'package:tart_labs_store/repositories/login_repository.dart';
+import 'package:tart_labs_store/repositories/profile_repository.dart';
 import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
+import 'package:tart_labs_store/utils/image_resources.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
-import 'package:toast/toast.dart';
+import 'package:tart_labs_store/utils/string_resources.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,6 +23,13 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isButtonClicked = false;
 
   @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
@@ -29,15 +39,15 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/images/bg_1.jpg'),
-              fit: BoxFit.fill,
+              image: AssetImage(ImageResources.BG_IMAGE),
+              fit: BoxFit.cover,
             ),
           ),
           child: ListView(
             children: <Widget>[
-              Container(height: 100),
+              SizedBox(height: 100),
               Image.asset(
-                'assets/images/group_4.png',
+                ImageResources.APP_ICON,
                 width: 171,
                 height: 184,
               ),
@@ -46,41 +56,41 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'Email',
+                    CustomText(
+                      text: StringResource.EMAIL_TEXT,
                       style: GoogleFonts.quicksand(
                         fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Container(height: 6),
+                    SizedBox(height: 6),
                     CustomTextField(
                       icon: Icons.mail_outline,
                       keyboardType: TextInputType.emailAddress,
                       controller: usernameController,
                     ),
-                    Container(height: 8),
-                    Text(
-                      'Password',
+                    SizedBox(height: 8),
+                    CustomText(
+                      text: StringResource.PASSWORD_TEXT,
                       style: GoogleFonts.quicksand(
                         fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Container(height: 6),
+                    SizedBox(height: 6),
                     CustomTextField(
                       icon: Icons.lock_outline,
                       obscureText: true,
                       controller: passwordController,
                     ),
-                    Container(height: 30),
+                    SizedBox(height: 30),
                     Center(
                       child: isButtonClicked
-                          ? CupertinoActivityIndicator()
+                          ? CircularProgressIndicator()
                           : PrimaryButton(
-                              buttonText: 'Sign In',
+                              buttonText: StringResource.SIGN_IN_TEXT,
                               onPressed: onLoginButtonPressed,
                             ),
                     )
@@ -95,32 +105,33 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onLoginButtonPressed() async {
-    setState(() {
-      isButtonClicked = true;
-    });
+    setIsButtonClicked(true);
     try {
-      Token token = await LoginRepository.login(
+      Token token = await LoginRepository.authenticate(
         usernameController.text,
         passwordController.text,
       );
       if (token != null) {
         PreferenceHelper.saveToken(token);
+        final user = await ProfileRepository.getUser();
+        PreferenceHelper.saveName(user.user.name);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),
+            builder: (context) => HomeScreen(userName: user.user.name),
           ),
         );
       } else {
-        setState(() {
-          isButtonClicked = false;
-        });
+        setIsButtonClicked(false);
       }
     } catch (error) {
-      setState(() {
-        isButtonClicked = false;
-      });
-      Toast.show("Invalid username or password", context);
+      setIsButtonClicked(false);
     }
+  }
+
+  void setIsButtonClicked(bool isClicked) {
+    setState(() {
+      isButtonClicked = isClicked;
+    });
   }
 }

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/app_list_item.dart';
-import 'package:tart_labs_store/constants/colors.dart';
+import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
+import 'package:tart_labs_store/utils/color_resources.dart';
+import 'package:tart_labs_store/utils/image_resources.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
-
+import 'package:tart_labs_store/utils/string_resources.dart';
 import 'app_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
+  final String userName;
+
+  const HomeScreen({this.userName});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -17,8 +23,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    super.initState();
     appBloc.getApps();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    appBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -26,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appBar(),
       drawer: drawer(),
-      backgroundColor: BG_COLOR,
+      backgroundColor: ColorResources.BG_COLOR,
       body: StreamBuilder(
         stream: appBloc.getAppList,
         builder: (context, snapshot) {
@@ -47,7 +59,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           }
-          return Container();
+          return Center(
+            child: CustomText(
+              text: StringResource.NO_APPS_TEXT,
+              style: GoogleFonts.quicksand(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
         },
       ),
     );
@@ -55,19 +75,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget appBar() {
     return AppBar(
-      backgroundColor: SECONDARY_COLOR,
+      backgroundColor: ColorResources.SECONDARY_COLOR,
       title: RichText(
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-              text: 'Tart',
+              text: StringResource.TART_TEXT,
               style: GoogleFonts.exo2(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             TextSpan(
-              text: 'labs Store',
+              text: StringResource.STORE_TEXT,
               style: GoogleFonts.exo2(
                 fontSize: 24,
                 fontWeight: FontWeight.w300,
@@ -84,17 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
       child: ListView(
         children: <Widget>[
           drawerHeader(),
-          Container(height: 10),
-          drawerItem(0, selectedIndex, 'My Apps', Icons.layers, () {
-            setState(() {
-              selectedIndex = 0;
-            });
+          SizedBox(height: 10),
+          drawerItem(0, selectedIndex, StringResource.MY_APPS_TEXT, Icons.layers, () {
+            setSelectedIndex(0);
             Navigator.pop(context);
           }),
-          drawerItem(1, selectedIndex, 'Log out', Icons.arrow_forward, () {
-            setState(() {
-              selectedIndex = 1;
-            });
+          drawerItem(1, selectedIndex, StringResource.LOG_OUT_TEXT, Icons.arrow_forward, () {
+            setSelectedIndex(1);
             PreferenceHelper.clearToken();
             Navigator.pushReplacement(
               context,
@@ -115,13 +131,14 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             Image.asset(
-              'assets/images/group_4.png',
+              ImageResources.APP_ICON,
               width: 100,
               height: 110,
+              fit: BoxFit.cover,
             ),
-            Container(height: 24),
-            Text(
-              'Gowtham Raj',
+            SizedBox(height: 24),
+            CustomText(
+              text: widget.userName,
               style: GoogleFonts.quicksand(
                 color: Colors.white,
                 fontSize: 16,
@@ -132,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/bg_1.jpg'),
+            image: AssetImage(ImageResources.BG_IMAGE),
             fit: BoxFit.cover,
           ),
         ),
@@ -144,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
       IconData icon, Function onTap) {
     bool isSelected = itemIndex == selectedIndex;
     return Container(
-      color: isSelected ? FADED_RED : null,
+      color: isSelected ? ColorResources.FADED_RED : null,
       child: ListTile(
         leading: Icon(
           icon,
@@ -152,8 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: Align(
           alignment: Alignment(-1.3, 0),
-          child: Text(
-            title,
+          child: CustomText(
+            text: title,
             style: GoogleFonts.quicksand(
               fontWeight: FontWeight.bold,
               fontSize: 14,
@@ -164,5 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: onTap,
       ),
     );
+  }
+
+  void setSelectedIndex(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
   }
 }

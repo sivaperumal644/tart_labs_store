@@ -29,6 +29,7 @@ dependencies:
   intl: ^0.16.1
   google_fonts: ^0.6.2
   json_annotation: ^3.0.1
+  url_launcher: ^5.4.5
 
 dev_dependencies:
   flutter_test:
@@ -80,12 +81,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  fonts:
-    - family: Quicksand
-      fonts:
-      - asset: assets/fonts/Quicksand-Bold.ttf
-      - asset: assets/fonts/Quicksand-Light.ttf
-      - asset: assets/fonts/Quicksand-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

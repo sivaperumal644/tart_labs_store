@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:tart_labs_store/constants/strings.dart';
+import 'package:tart_labs_store/utils/constants.dart';
 
 class DioHelper{
   Dio dio = Dio();
-  DioHelper(){
-    dio.options.baseUrl = BASE_URL;
+  DioHelper() {
+    dio.options.baseUrl = Constants.BASE_URL;
     dio.options.headers[HttpHeaders.acceptHeader] = 'application/json'; 
   }
 }

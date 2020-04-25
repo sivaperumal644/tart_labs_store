@@ -4,8 +4,6 @@ import 'package:tart_labs_store/repositories/apps_repository.dart';
 import 'package:tart_labs_store/responses/app_response.dart';
 
 class AppBloc {
-  List<App> appList = [];
-
   final appController = StreamController<List<App>>.broadcast();
 
   Future getApps() async {

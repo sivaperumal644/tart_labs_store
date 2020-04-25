@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:tart_labs_store/constants/colors.dart';
+import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/models/app.dart';
+import 'package:tart_labs_store/screens/detail_screen/app_detail_bloc.dart';
+import 'package:tart_labs_store/utils/color_resources.dart';
+import 'package:tart_labs_store/utils/string_resources.dart';
 
-class AppDetailScreen extends StatelessWidget {
+class AppDetailScreen extends StatefulWidget {
   final App app;
 
   const AppDetailScreen({this.app});
 
   @override
+  _AppDetailScreenState createState() => _AppDetailScreenState();
+}
+
+class _AppDetailScreenState extends State<AppDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+    appDetailBloc.getAppUrls(widget.app.id);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final DateTime dateString = DateTime.parse(app.createdAt);
+    final DateTime dateString = DateTime.parse(widget.app.createdAt);
     final String createdDate = new DateFormat.yMMMd().format(dateString);
     return Scaffold(
-      backgroundColor: BG_COLOR,
+      backgroundColor: ColorResources.BG_COLOR,
       appBar: AppBar(
-        backgroundColor: SECONDARY_COLOR,
-        title: Text(
-          app.appName,
+        backgroundColor: ColorResources.SECONDARY_COLOR,
+        title: CustomText(
+          text: widget.app.appName,
           style: GoogleFonts.exo2(
             fontSize: 24,
             fontWeight: FontWeight.w400,
@@ -34,35 +48,19 @@ class AppDetailScreen extends StatelessWidget {
             BoxShadow(
               blurRadius: 4,
               color: Colors.black.withOpacity(0.33),
-            )
+            ),
           ],
         ),
         child: Column(
           children: <Widget>[
             appTitleAndLogo(createdDate),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.share),
-                  Container(width: 10),
-                  Text(
-                    'Get sharable app link',
-                    style: GoogleFonts.nunitoSans(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            getSharableWidget(),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Align(
                 alignment: Alignment.topLeft,
-                child: Text(
-                  app.description,
+                child: CustomText(
+                  text: widget.app.description,
                   style: GoogleFonts.quicksand(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -70,13 +68,47 @@ class AppDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(height: 24),
+            SizedBox(height: 24),
             newFeaturesWidget(),
-            Container(height: 20),
+            SizedBox(height: 20),
             viewOlderBuildsWidget()
           ],
         ),
       ),
+    );
+  }
+
+  Widget getSharableWidget() {
+    return StreamBuilder(
+      stream: appDetailBloc.getAppUrl,
+      builder: (context, snapshot) {
+        return InkWell(
+          onTap: () async {
+            try {
+              await appDetailBloc.launchUrl(snapshot.data);
+            } catch (error) {
+              print(error);
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.all(16),
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.share),
+                SizedBox(width: 10),
+                CustomText(
+                  text: StringResource.GET_SHARABLE_TEXT,
+                  style: GoogleFonts.nunitoSans(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -85,18 +117,18 @@ class AppDetailScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: <Widget>[
-          Text(
-            'View Older Builds',
+          CustomText(
+            text: StringResource.OLDER_BUILDS_TEXT,
             style: GoogleFonts.quicksand(
               color: Colors.black.withOpacity(0.75),
               fontWeight: FontWeight.w400,
             ),
           ),
-          Container(width: 10),
+          SizedBox(width: 10),
           Icon(
             Icons.arrow_forward_ios,
             size: 16,
-            color: FADED_RED,
+            color: ColorResources.FADED_RED,
           )
         ],
       ),
@@ -110,25 +142,25 @@ class AppDetailScreen extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            FADED_RED.withOpacity(0.81),
-            Color(0xffceec7175),
+            ColorResources.FADED_RED.withOpacity(0.81),
+            ColorResources.Light_RED,
           ],
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "What's New :",
+          CustomText(
+            text: StringResource.WHATS_NEW_TEXT,
             style: GoogleFonts.quicksand(
               fontSize: 14,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          Container(height: 4),
-          Text(
-            'Bug fixes and a couple of UI changes',
+          SizedBox(height: 4),
+          CustomText(
+            text: StringResource.WHATS_NEW_TEXT_DESCRIPTION,
             style: GoogleFonts.quicksand(
               color: Colors.white,
               fontSize: 14,
@@ -147,26 +179,26 @@ class AppDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Image.network(
-            app.appLogo,
+            widget.app.appLogo,
             width: 67,
             height: 67,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
           ),
-          Container(width: 10),
+          SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                app.appName,
+              CustomText(
+                text: widget.app.appName,
                 style: GoogleFonts.quicksand(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              Text(
-                date,
+              CustomText(
+                text: date,
                 style: GoogleFonts.quicksand(
-                  color: Color(0xff777777),
+                  color: Colors.grey,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
@@ -191,10 +223,10 @@ class AppDetailScreen extends StatelessWidget {
                   ),
                   child: RaisedButton(
                     padding: EdgeInsets.symmetric(horizontal: 30),
-                    color: FADED_RED,
+                    color: ColorResources.FADED_RED,
                     onPressed: () {},
-                    child: Text(
-                      'Install',
+                    child: CustomText(
+                      text: StringResource.INSTALL_TEXT,
                       style: GoogleFonts.quicksand(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,

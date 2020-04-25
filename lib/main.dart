@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
-import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
+import 'package:tart_labs_store/screens/splash_screen.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
 
 main() => runApp(MyApp());
@@ -21,9 +20,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: isAuthenticated ? HomeScreen() : LoginScreen(),
-    );
+    return MaterialApp(home: SplashScreen());
   }
 
   getPref() async {

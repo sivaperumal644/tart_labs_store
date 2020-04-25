@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:tart_labs_store/constants/colors.dart';
 import 'package:tart_labs_store/models/app.dart';
-import 'package:tart_labs_store/screens/app_detail_screen.dart';
+import 'package:tart_labs_store/screens/detail_screen/app_detail_screen.dart';
+import 'package:tart_labs_store/utils/color_resources.dart';
+
+import 'custom_text.dart';
 
 class AppListItem extends StatelessWidget {
   final App app;
@@ -14,8 +16,9 @@ class AppListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime createdDateTime = DateTime.parse(app.createdAt);
-    final String createdDate = new DateFormat.yMMMd().format(createdDateTime);
+    final DateTime updatedDateTime = DateTime.parse(app.updatedAt);
+    final String updatedDate = new DateFormat.yMMMd().format(updatedDateTime);
+
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -43,23 +46,23 @@ class AppListItem extends StatelessWidget {
               app.appLogo,
               width: 67,
               height: 67,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
-            Container(width: 10),
+            SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  app.appName,
+                CustomText(
+                  text: app.appName,
                   style: GoogleFonts.quicksand(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-                Text(
-                  createdDate,
+                CustomText(
+                  text: updatedDate,
                   style: GoogleFonts.quicksand(
-                    color: Color(0xff777777),
+                    color: Colors.grey,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
@@ -73,7 +76,7 @@ class AppListItem extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: FADED_RED,
+                    color: ColorResources.FADED_RED,
                   ),
                 ),
               ),

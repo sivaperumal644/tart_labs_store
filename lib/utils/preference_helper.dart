@@ -13,14 +13,32 @@ class PreferenceHelper {
   }
 
   static saveToken(Token token) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
     if (token == null) {
       return;
     }
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("token", token.accessToken);
   }
 
-  static clearToken() async{
+  static Future<String> getName() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String name = preferences.get("username");
+    if (name?.isEmpty ?? true) {
+      return null;
+    } else {
+      return name;
+    }
+  }
+
+  static saveName(String name) async {
+    if (name == null) {
+      return;
+    }
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString("username", name);
+  }
+
+  static clearToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
   }
