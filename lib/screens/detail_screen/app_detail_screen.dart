@@ -17,6 +17,7 @@ class AppDetailScreen extends StatefulWidget {
 }
 
 class _AppDetailScreenState extends State<AppDetailScreen> {
+  AppDetailBloc appDetailBloc = new AppDetailBloc();
   @override
   void initState() {
     super.initState();
@@ -87,7 +88,6 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
             try {
               await appDetailBloc.launchUrl(snapshot.data);
             } catch (error) {
-              print(error);
             }
           },
           child: Container(

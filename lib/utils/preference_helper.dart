@@ -1,14 +1,16 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tart_labs_store/models/token.dart';
 
 class PreferenceHelper {
-  static Future<String> getToken() async {
+  static Future<Token> getToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String token = preferences.get("token");
     if (token?.isEmpty ?? true) {
       return null;
     } else {
-      return token;
+      Map<String, dynamic> tokenMap = await jsonDecode(token);
+      return Token.fromJson(tokenMap);
     }
   }
 
@@ -17,7 +19,7 @@ class PreferenceHelper {
       return;
     }
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString("token", token.accessToken);
+    preferences.setString("token", jsonEncode(token));
   }
 
   static Future<String> getName() async {

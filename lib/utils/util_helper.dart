@@ -1,13 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class Helper {
-  static showToast(String message, BuildContext context) {
-    Toast.show(
-      message,
-      context,
-      gravity: Toast.BOTTOM,
-      duration: Toast.LENGTH_SHORT,
+class UtilHelper {
+  static showToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 16.0,
     );
   }
 }

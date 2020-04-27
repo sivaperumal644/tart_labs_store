@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           );
         } else {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => LoginScreen(),
@@ -61,9 +61,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   getPref() async {
     final tokenValue = await PreferenceHelper.getToken();
-    setState(() {
-      token = tokenValue;
-    });
+    if (tokenValue != null)
+      setState(() {
+        token = tokenValue.accessToken;
+      });
+    else
+      token = null;
   }
 
   getUser() async {

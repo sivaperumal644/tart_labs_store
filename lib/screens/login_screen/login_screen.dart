@@ -4,10 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
-import 'package:tart_labs_store/models/token.dart';
-import 'package:tart_labs_store/repositories/login_repository.dart';
-import 'package:tart_labs_store/repositories/profile_repository.dart';
 import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
+import 'package:tart_labs_store/screens/login_screen/login_bloc.dart';
 import 'package:tart_labs_store/utils/image_resources.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
 import 'package:tart_labs_store/utils/string_resources.dart';
@@ -20,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final usernameController = new TextEditingController();
   final passwordController = new TextEditingController();
+  final loginBloc = new LoginBloc();
   bool isButtonClicked = false;
 
   @override
@@ -106,25 +105,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void onLoginButtonPressed() async {
     setIsButtonClicked(true);
-    try {
-      Token token = await LoginRepository.authenticate(
-        usernameController.text,
-        passwordController.text,
+    bool isLoggedIn =
+        await loginBloc.login(usernameController.text, passwordController.text);
+    if (isLoggedIn) {
+      final user = await PreferenceHelper.getName();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(userName: user),
+        ),
       );
-      if (token != null) {
-        PreferenceHelper.saveToken(token);
-        final user = await ProfileRepository.getUser();
-        PreferenceHelper.saveName(user.user.name);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(userName: user.user.name),
-          ),
-        );
-      } else {
-        setIsButtonClicked(false);
-      }
-    } catch (error) {
+    } else {
       setIsButtonClicked(false);
     }
   }
