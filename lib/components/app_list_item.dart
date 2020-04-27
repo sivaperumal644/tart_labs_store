@@ -3,8 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:tart_labs_store/models/app.dart';
 import 'package:tart_labs_store/screens/detail_screen/app_detail_screen.dart';
-import 'package:tart_labs_store/utils/color_resources.dart';
-
+import 'package:tart_labs_store/utils/color_resource.dart';
 import 'custom_text.dart';
 
 class AppListItem extends StatelessWidget {
@@ -76,7 +75,7 @@ class AppListItem extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Icon(
                     Icons.arrow_forward_ios,
-                    color: ColorResources.FADED_RED,
+                    color: ColorResource.fadedRed,
                   ),
                 ),
               ),

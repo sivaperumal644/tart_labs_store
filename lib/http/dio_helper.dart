@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:tart_labs_store/http/http_urls.dart';
 import 'package:tart_labs_store/models/token.dart';
+import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
+import 'package:tart_labs_store/utils/app_utils.dart';
 import 'package:tart_labs_store/utils/constants.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
-import 'package:tart_labs_store/utils/util_helper.dart';
 
 class DioHelper {
   Dio dio = Dio();
@@ -45,22 +47,23 @@ class DioHelper {
             switch (error.response.statusCode) {
               case 401:
                 PreferenceHelper.clearToken();
+                Get.off(LoginScreen());
                 return error;
                 break;
               case 400:
-                UtilHelper.showToast("Invalid username or password");
+                AppUtils.showToast("Invalid username or password");
                 break;
               case 500:
-                UtilHelper.showToast("Server error, try again later");
+                AppUtils.showToast("Server error, try again later");
                 break;
               case 404:
-                UtilHelper.showToast("404 error");
+                AppUtils.showToast("404 error");
                 break;
             }
           } else if (error.type == DioErrorType.DEFAULT) {
-            UtilHelper.showToast("Check your internet connection");
+            AppUtils.showToast("Check your internet connection");
           } else {
-            UtilHelper.showToast(error.message);
+            AppUtils.showToast(error.message);
           }
           return error;
         },
@@ -70,7 +73,7 @@ class DioHelper {
 
   getRefreshToken(Dio dio, Token token) async {
     try {
-      Response response = await dio.post(HttpUrls.REFRESH_TOKEN_URL, data: {
+      Response response = await dio.post(HttpUrls.refreshTokenUrl, data: {
         "client_id": Constants.CLIENT_ID,
         "client_secret": Constants.CLIENT_SECRET,
         "grant_type": Constants.REFRESH_GRANT_TYPE,

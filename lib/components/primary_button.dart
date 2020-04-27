@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/custom_text.dart';
-import 'package:tart_labs_store/utils/color_resources.dart';
+import 'package:tart_labs_store/utils/color_resource.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String buttonText;
@@ -27,7 +27,7 @@ class PrimaryButton extends StatelessWidget {
       ),
       child: RaisedButton(
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        color: ColorResources.FADED_RED,
+        color: ColorResource.fadedRed,
         onPressed: onPressed,
         child: CustomText(
           text: buttonText,
@@ -41,7 +41,7 @@ class PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
           side: BorderSide(
             width: 2,
-            color: ColorResources.PRIMARY_COLOR,
+            color: ColorResource.primaryColor,
           ),
         ),
       ),

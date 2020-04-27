@@ -4,10 +4,9 @@ import 'package:tart_labs_store/responses/profile_response.dart';
 
 class ProfileRepository {
   static Future<ProfileResponse> getUser() async {
-    ProfileResponse profileResponse;
-    final response = await dio.get(HttpUrls.PROFILE_URL);
+    final response = await dio.get(HttpUrls.profileUrl);
     var result = response.data;
-    profileResponse = ProfileResponse.fromJson(result);
+    ProfileResponse profileResponse = ProfileResponse.fromJson(result);
     return profileResponse;
   }
 }

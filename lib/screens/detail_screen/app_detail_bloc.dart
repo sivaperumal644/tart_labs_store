@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:tart_labs_store/models/app_url.dart';
 import 'package:tart_labs_store/repositories/app_url_repository.dart';
 import 'package:tart_labs_store/responses/app_url_response.dart';
-import 'package:tart_labs_store/utils/util_helper.dart';
+import 'package:tart_labs_store/utils/app_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppDetailBloc {
@@ -11,7 +11,7 @@ class AppDetailBloc {
   Future getAppUrls(int id) async {
     AppUrlResponse appUrlResponse = await AppUrlRepository.getAppUrls(id);
     if (appUrlResponse.error != null) {
-      UtilHelper.showToast(appUrlResponse.message);
+      AppUtils.showToast(appUrlResponse.message);
     } else {
       final appUrls = appUrlResponse.appUrls;
       List<AppUrl> reversedAppUrls = appUrls.reversed.toList();

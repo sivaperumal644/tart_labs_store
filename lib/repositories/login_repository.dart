@@ -5,9 +5,8 @@ import 'package:tart_labs_store/utils/constants.dart';
 
 class LoginRepository {
   static Future<Token> authenticate(String username, String password) async {
-    Token token;
     final response = await dio.post(
-      HttpUrls.LOGIN_URL,
+      HttpUrls.loginUrl,
       data: {
         'username': username,
         'password': password,
@@ -18,7 +17,7 @@ class LoginRepository {
       },
     );
     var result = response.data;
-    token = Token.fromJson(result);
+    Token token = Token.fromJson(result);
     return token;
   }
 }

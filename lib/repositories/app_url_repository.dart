@@ -4,11 +4,9 @@ import 'package:tart_labs_store/responses/app_url_response.dart';
 
 class AppUrlRepository {
   static Future<AppUrlResponse> getAppUrls(int id) async {
-    AppUrlResponse appUrlResponse;
-    String url = HttpUrls.GET_SHARABLE_LINK + '$id';
-    final response = await dio.get(url);
+    final response = await dio.get(HttpUrls.getSharableLink(id));
     var result = response.data;
-    appUrlResponse = AppUrlResponse.fromJson(result);
+    AppUrlResponse appUrlResponse = AppUrlResponse.fromJson(result);
     return appUrlResponse;
   }
 }

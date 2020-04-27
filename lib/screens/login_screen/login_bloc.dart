@@ -2,8 +2,8 @@ import 'package:tart_labs_store/models/token.dart';
 import 'package:tart_labs_store/repositories/login_repository.dart';
 import 'package:tart_labs_store/repositories/profile_repository.dart';
 import 'package:tart_labs_store/responses/profile_response.dart';
+import 'package:tart_labs_store/utils/app_utils.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
-import 'package:tart_labs_store/utils/util_helper.dart';
 
 class LoginBloc {
   Future<bool> login(username, password) async {
@@ -14,7 +14,7 @@ class LoginBloc {
 
         ProfileResponse user = await ProfileRepository.getUser();
         if (user.error != null) {
-          UtilHelper.showToast(user.message);
+          AppUtils.showToast(user.message);
           return false;
         } else
           PreferenceHelper.saveName(user.user.name);

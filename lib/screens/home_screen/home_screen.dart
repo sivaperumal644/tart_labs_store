@@ -3,10 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tart_labs_store/components/app_list_item.dart';
 import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
-import 'package:tart_labs_store/utils/color_resources.dart';
-import 'package:tart_labs_store/utils/image_resources.dart';
+import 'package:tart_labs_store/utils/color_resource.dart';
+import 'package:tart_labs_store/utils/image_resource.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
-import 'package:tart_labs_store/utils/string_resources.dart';
+import 'package:tart_labs_store/utils/string_resource.dart';
 import 'app_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appBar(),
       drawer: drawer(),
-      backgroundColor: ColorResources.BG_COLOR,
+      backgroundColor: ColorResource.bgColor,
       body: StreamBuilder(
         stream: appBloc.getAppList,
         builder: (context, snapshot) {
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
           return Center(
             child: CustomText(
-              text: StringResource.NO_APPS_TEXT,
+              text: StringResource.noAppsText,
               style: GoogleFonts.quicksand(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -76,19 +76,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget appBar() {
     return AppBar(
-      backgroundColor: ColorResources.SECONDARY_COLOR,
+      backgroundColor: ColorResource.secondaryColor,
       title: RichText(
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-              text: StringResource.TART_TEXT,
+              text: StringResource.tartText,
               style: GoogleFonts.exo2(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             TextSpan(
-              text: StringResource.STORE_TEXT,
+              text: StringResource.storeText,
               style: GoogleFonts.exo2(
                 fontSize: 24,
                 fontWeight: FontWeight.w300,
@@ -106,11 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
         children: <Widget>[
           drawerHeader(),
           SizedBox(height: 10),
-          drawerItem(0, selectedIndex, StringResource.MY_APPS_TEXT, Icons.layers, () {
+          drawerItem(0, selectedIndex, StringResource.myAppsText, Icons.layers, () {
             setSelectedIndex(0);
             Navigator.pop(context);
           }),
-          drawerItem(1, selectedIndex, StringResource.LOG_OUT_TEXT, Icons.arrow_forward, () {
+          drawerItem(1, selectedIndex, StringResource.logOutText, Icons.arrow_forward, () {
             setSelectedIndex(1);
             PreferenceHelper.clearToken();
             Navigator.pushReplacement(
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             Image.asset(
-              ImageResources.APP_ICON,
+              ImageResource.appIcon,
               width: 100,
               height: 110,
               fit: BoxFit.cover,
@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(ImageResources.BG_IMAGE),
+            image: AssetImage(ImageResource.bgImage),
             fit: BoxFit.cover,
           ),
         ),
@@ -162,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
       IconData icon, Function onTap) {
     bool isSelected = itemIndex == selectedIndex;
     return Container(
-      color: isSelected ? ColorResources.FADED_RED : null,
+      color: isSelected ? ColorResource.fadedRed : null,
       child: ListTile(
         leading: Icon(
           icon,

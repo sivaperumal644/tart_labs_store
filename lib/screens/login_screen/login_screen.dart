@@ -6,9 +6,9 @@ import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
 import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
 import 'package:tart_labs_store/screens/login_screen/login_bloc.dart';
-import 'package:tart_labs_store/utils/image_resources.dart';
+import 'package:tart_labs_store/utils/image_resource.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
-import 'package:tart_labs_store/utils/string_resources.dart';
+import 'package:tart_labs_store/utils/string_resource.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(ImageResources.BG_IMAGE),
+              image: AssetImage(ImageResource.bgImage),
               fit: BoxFit.cover,
             ),
           ),
@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               SizedBox(height: 100),
               Image.asset(
-                ImageResources.APP_ICON,
+                ImageResource.appIcon,
                 width: 171,
                 height: 184,
               ),
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     CustomText(
-                      text: StringResource.EMAIL_TEXT,
+                      text: StringResource.emailText,
                       style: GoogleFonts.quicksand(
                         fontSize: 14,
                         color: Colors.white,
@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 8),
                     CustomText(
-                      text: StringResource.PASSWORD_TEXT,
+                      text: StringResource.passwordText,
                       style: GoogleFonts.quicksand(
                         fontSize: 14,
                         color: Colors.white,
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: isButtonClicked
                           ? CircularProgressIndicator()
                           : PrimaryButton(
-                              buttonText: StringResource.SIGN_IN_TEXT,
+                              buttonText: StringResource.signInText,
                               onPressed: onLoginButtonPressed,
                             ),
                     )

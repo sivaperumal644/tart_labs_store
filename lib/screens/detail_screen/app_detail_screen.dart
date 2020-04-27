@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/models/app.dart';
 import 'package:tart_labs_store/screens/detail_screen/app_detail_bloc.dart';
-import 'package:tart_labs_store/utils/color_resources.dart';
-import 'package:tart_labs_store/utils/string_resources.dart';
+import 'package:tart_labs_store/utils/app_utils.dart';
+import 'package:tart_labs_store/utils/color_resource.dart';
+import 'package:tart_labs_store/utils/string_resource.dart';
 
 class AppDetailScreen extends StatefulWidget {
   final App app;
@@ -26,12 +27,12 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime dateString = DateTime.parse(widget.app.createdAt);
-    final String createdDate = new DateFormat.yMMMd().format(dateString);
+    final DateTime dateString = DateTime.parse(widget.app.updatedAt);
+    final String updatedDate = new DateFormat.yMMMd().format(dateString);
     return Scaffold(
-      backgroundColor: ColorResources.BG_COLOR,
+      backgroundColor: ColorResource.bgColor,
       appBar: AppBar(
-        backgroundColor: ColorResources.SECONDARY_COLOR,
+        backgroundColor: ColorResource.secondaryColor,
         title: CustomText(
           text: widget.app.appName,
           style: GoogleFonts.exo2(
@@ -54,7 +55,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
         ),
         child: Column(
           children: <Widget>[
-            appTitleAndLogo(createdDate),
+            appTitleAndLogo(updatedDate),
             getSharableWidget(),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -88,6 +89,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
             try {
               await appDetailBloc.launchUrl(snapshot.data);
             } catch (error) {
+              AppUtils.showToast("Error opening the link");
             }
           },
           child: Container(
@@ -97,7 +99,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
                 Icon(Icons.share),
                 SizedBox(width: 10),
                 CustomText(
-                  text: StringResource.GET_SHARABLE_TEXT,
+                  text: StringResource.getSharableText,
                   style: GoogleFonts.nunitoSans(
                     color: Colors.black,
                     fontSize: 14,
@@ -118,7 +120,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
       child: Row(
         children: <Widget>[
           CustomText(
-            text: StringResource.OLDER_BUILDS_TEXT,
+            text: StringResource.olderBuildsText,
             style: GoogleFonts.quicksand(
               color: Colors.black.withOpacity(0.75),
               fontWeight: FontWeight.w400,
@@ -128,7 +130,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
           Icon(
             Icons.arrow_forward_ios,
             size: 16,
-            color: ColorResources.FADED_RED,
+            color: ColorResource.fadedRed,
           )
         ],
       ),
@@ -142,8 +144,8 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            ColorResources.FADED_RED.withOpacity(0.81),
-            ColorResources.Light_RED,
+            ColorResource.fadedRed.withOpacity(0.81),
+            ColorResource.lightRed,
           ],
         ),
       ),
@@ -151,7 +153,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           CustomText(
-            text: StringResource.WHATS_NEW_TEXT,
+            text: StringResource.whatsNewText,
             style: GoogleFonts.quicksand(
               fontSize: 14,
               color: Colors.white,
@@ -160,7 +162,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
           ),
           SizedBox(height: 4),
           CustomText(
-            text: StringResource.WHATS_NEW_TEXT_DESCRIPTION,
+            text: StringResource.whatsNewTextDescription,
             style: GoogleFonts.quicksand(
               color: Colors.white,
               fontSize: 14,
@@ -223,10 +225,10 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
                   ),
                   child: RaisedButton(
                     padding: EdgeInsets.symmetric(horizontal: 30),
-                    color: ColorResources.FADED_RED,
+                    color: ColorResource.fadedRed,
                     onPressed: () {},
                     child: CustomText(
-                      text: StringResource.INSTALL_TEXT,
+                      text: StringResource.installText,
                       style: GoogleFonts.quicksand(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
