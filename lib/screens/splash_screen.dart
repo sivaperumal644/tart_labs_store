@@ -1,43 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tart_labs_store/screens/home_screen/home_screen.dart';
-import 'package:tart_labs_store/screens/login_screen/login_screen.dart';
-import 'package:tart_labs_store/utils/preference_helper.dart';
 
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  String token;
-  String userName;
-  @override
-  void initState() {
-    super.initState();
-    getPref();
-    Future.delayed(
-      Duration(seconds: 3),
-      () {
-        if (token != null) {
-          getUser();
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(userName: userName),
-            ),
-          );
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ),
-          );
-        }
-      },
-    );
-  }
-
+class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,22 +20,5 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
-  }
-
-  getPref() async {
-    final tokenValue = await PreferenceHelper.getToken();
-    if (tokenValue != null)
-      setState(() {
-        token = tokenValue.accessToken;
-      });
-    else
-      token = null;
-  }
-
-  getUser() async {
-    final userNameValue = await PreferenceHelper.getName();
-    setState(() {
-      userName = userNameValue;
-    });
   }
 }

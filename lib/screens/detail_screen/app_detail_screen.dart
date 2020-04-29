@@ -1,116 +1,108 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:tart_labs_store/components/custom_text.dart';
-import 'package:tart_labs_store/models/app.dart';
-import 'package:tart_labs_store/screens/detail_screen/app_detail_bloc.dart';
-import 'package:tart_labs_store/utils/app_utils.dart';
+import 'package:tart_labs_store/screens/detail_screen/bloc/app_detail_bloc.dart';
+import 'package:tart_labs_store/screens/detail_screen/bloc/app_detail_event.dart';
+import 'package:tart_labs_store/screens/detail_screen/bloc/app_detail_state.dart';
 import 'package:tart_labs_store/utils/color_resource.dart';
 import 'package:tart_labs_store/utils/string_resource.dart';
 
 class AppDetailScreen extends StatefulWidget {
-  final App app;
-
-  const AppDetailScreen({this.app});
-
   @override
   _AppDetailScreenState createState() => _AppDetailScreenState();
 }
 
 class _AppDetailScreenState extends State<AppDetailScreen> {
-  AppDetailBloc appDetailBloc = new AppDetailBloc();
+  AppDetailBloc appDetailBloc;
   @override
   void initState() {
     super.initState();
-    appDetailBloc.getAppUrls(widget.app.id);
+    appDetailBloc = BlocProvider.of<AppDetailBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    final DateTime dateString = DateTime.parse(widget.app.updatedAt);
-    final String updatedDate = new DateFormat.yMMMd().format(dateString);
     return Scaffold(
       backgroundColor: ColorResource.bgColor,
       appBar: AppBar(
         backgroundColor: ColorResource.secondaryColor,
         title: CustomText(
-          text: widget.app.appName,
+          text: appDetailBloc.app.appName,
           style: GoogleFonts.exo2(
             fontSize: 24,
             fontWeight: FontWeight.w400,
           ),
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 4,
-              color: Colors.black.withOpacity(0.33),
+      body: BlocBuilder<AppDetailBloc, AppDetailState>(
+        bloc: appDetailBloc,
+        builder: (BuildContext context, AppDetailState state) {
+          if (state is AppDetailLoadingState ||
+              state is AppDetailInitialState) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Container(
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 4,
+                  color: Colors.black.withOpacity(0.33),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          children: <Widget>[
-            appTitleAndLogo(updatedDate),
-            getSharableWidget(),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: CustomText(
-                  text: widget.app.description,
-                  style: GoogleFonts.quicksand(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+            child: Column(
+              children: <Widget>[
+                appTitleAndLogo(appDetailBloc.updatedDate),
+                getSharableWidget(),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: CustomText(
+                      text: appDetailBloc.app.description,
+                      style: GoogleFonts.quicksand(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                SizedBox(height: 24),
+                newFeaturesWidget(),
+                SizedBox(height: 20),
+                viewOlderBuildsWidget(),
+              ],
             ),
-            SizedBox(height: 24),
-            newFeaturesWidget(),
-            SizedBox(height: 20),
-            viewOlderBuildsWidget()
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
   Widget getSharableWidget() {
-    return StreamBuilder(
-      stream: appDetailBloc.getAppUrl,
-      builder: (context, snapshot) {
-        return InkWell(
-          onTap: () async {
-            try {
-              await appDetailBloc.launchUrl(snapshot.data);
-            } catch (error) {
-              AppUtils.showToast("Error opening the link");
-            }
-          },
-          child: Container(
-            margin: EdgeInsets.all(16),
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.share),
-                SizedBox(width: 10),
-                CustomText(
-                  text: StringResource.getSharableText,
-                  style: GoogleFonts.nunitoSans(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
+    return InkWell(
+      onTap: onSharableButtonPressed,
+      child: Container(
+        margin: EdgeInsets.all(16),
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.share),
+            SizedBox(width: 10),
+            CustomText(
+              text: StringResource.getSharableText,
+              style: GoogleFonts.nunitoSans(
+                color: Colors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
@@ -181,7 +173,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Image.network(
-            widget.app.appLogo,
+            appDetailBloc.app.appLogo,
             width: 67,
             height: 67,
             fit: BoxFit.cover,
@@ -191,7 +183,7 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CustomText(
-                text: widget.app.appName,
+                text: appDetailBloc.app.appName,
                 style: GoogleFonts.quicksand(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -244,6 +236,12 @@ class _AppDetailScreenState extends State<AppDetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  onSharableButtonPressed() {
+    appDetailBloc.add(
+      SharableButtonPressedEvent(),
     );
   }
 }

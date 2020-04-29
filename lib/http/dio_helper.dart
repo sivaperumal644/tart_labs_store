@@ -46,8 +46,7 @@ class DioHelper {
           if (error.type == DioErrorType.RESPONSE) {
             switch (error.response.statusCode) {
               case 401:
-                PreferenceHelper.clearToken();
-                Get.off(LoginScreen());
+                logOut();
                 return error;
                 break;
               case 400:
@@ -58,6 +57,9 @@ class DioHelper {
                 break;
               case 404:
                 AppUtils.showToast("404 error");
+                break;
+              case 403:
+                AppUtils.showToast("Your not authorized");
                 break;
             }
           } else if (error.type == DioErrorType.DEFAULT) {
@@ -88,6 +90,11 @@ class DioHelper {
     } catch (error) {
       return;
     }
+  }
+
+  logOut() {
+    PreferenceHelper.clearToken();
+    Get.off(LoginScreen());
   }
 }
 

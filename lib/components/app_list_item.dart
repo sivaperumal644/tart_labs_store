@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:tart_labs_store/models/app.dart';
-import 'package:tart_labs_store/screens/detail_screen/app_detail_screen.dart';
+import 'package:tart_labs_store/screens/home_screen/bloc/app_bloc.dart';
+import 'package:tart_labs_store/screens/home_screen/bloc/app_event.dart';
+import 'package:tart_labs_store/utils/app_utils.dart';
 import 'package:tart_labs_store/utils/color_resource.dart';
 import 'custom_text.dart';
 
 class AppListItem extends StatelessWidget {
   final App app;
+  final AppBloc appBloc;
 
   const AppListItem({
     this.app,
+    this.appBloc,
   });
 
   @override
   Widget build(BuildContext context) {
-    final DateTime updatedDateTime = DateTime.parse(app.updatedAt);
-    final String updatedDate = new DateFormat.yMMMd().format(updatedDateTime);
-
+    String updatedDate = AppUtils.getUpdatedDate(app.updatedAt);
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AppDetailScreen(app: app)),
-        );
+        appBloc.add(AppDetailNavigateEvent(app));
       },
       borderRadius: BorderRadius.circular(4),
       child: Container(
