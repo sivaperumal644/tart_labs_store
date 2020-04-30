@@ -1,16 +1,16 @@
 import 'package:bloc/bloc.dart';
-import 'package:tart_labs_store/authentication/authentication_events.dart';
-import 'package:tart_labs_store/authentication/authentication_states.dart';
+import 'package:tart_labs_store/authentication/authentication_event.dart';
+import 'package:tart_labs_store/authentication/authentication_state.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
 
 class AuthenticationBloc
-    extends Bloc<AuthenticationEvents, AuthenticationStates> {
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   @override
-  AuthenticationStates get initialState => AuthenticationInitialState();
+  AuthenticationState get initialState => AuthenticationInitialState();
 
   @override
-  Stream<AuthenticationStates> mapEventToState(
-      AuthenticationEvents event) async* {
+  Stream<AuthenticationState> mapEventToState(
+      AuthenticationEvent event) async* {
     if (event is AppStartedEvent) {
       if (await PreferenceHelper.getToken() != null) {
         yield AuthenticationLoggedInState();
@@ -20,13 +20,11 @@ class AuthenticationBloc
     }
 
     if (event is AuthenticationLoggedInEvent) {
-      yield AuthenticationLoadingState();
       yield AuthenticationLoggedInState();
     }
 
     if (event is AuthenticationLoggedOutEvent) {
-      yield AuthenticationLoadingState();
-      await PreferenceHelper.clearToken();
+      await PreferenceHelper.clearStorage();
       yield AuthenticationLoggedOutState();
     }
   }

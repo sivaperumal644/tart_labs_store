@@ -6,6 +6,7 @@ import 'package:tart_labs_store/components/custom_text.dart';
 import 'package:tart_labs_store/components/custom_text_field.dart';
 import 'package:tart_labs_store/components/primary_button.dart';
 import 'package:tart_labs_store/screens/login_screen/bloc/login_event.dart';
+import 'package:tart_labs_store/utils/app_utils.dart';
 import 'package:tart_labs_store/utils/image_resource.dart';
 import 'package:tart_labs_store/utils/string_resource.dart';
 import 'bloc/login_bloc.dart';
@@ -17,8 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final usernameController = new TextEditingController();
-  final passwordController = new TextEditingController();
   LoginBloc loginBloc;
 
   @override
@@ -29,8 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
     loginBloc.close();
     super.dispose();
   }
@@ -49,66 +46,77 @@ class _LoginScreenState extends State<LoginScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          child: BlocBuilder<LoginBloc, LoginState>(
+          child: BlocListener(
             bloc: loginBloc,
-            builder: (BuildContext context, LoginState state) {
-              return ListView(
-                children: <Widget>[
-                  SizedBox(height: 100),
-                  Image.asset(
-                    ImageResource.appIcon,
-                    width: 171,
-                    height: 184,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 42, vertical: 42),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CustomText(
-                          text: StringResource.emailText,
-                          style: GoogleFonts.quicksand(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        CustomTextField(
-                          icon: Icons.mail_outline,
-                          keyboardType: TextInputType.emailAddress,
-                          controller: usernameController,
-                        ),
-                        SizedBox(height: 8),
-                        CustomText(
-                          text: StringResource.passwordText,
-                          style: GoogleFonts.quicksand(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        CustomTextField(
-                          icon: Icons.lock_outline,
-                          obscureText: true,
-                          controller: passwordController,
-                        ),
-                        SizedBox(height: 30),
-                        Center(
-                          child: (state is LoginLoadingState)
-                              ? CircularProgressIndicator()
-                              : PrimaryButton(
-                                  buttonText: StringResource.signInText,
-                                  onPressed: onLoginButtonPressed,
-                                ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              );
+            listener: (context, state) {
+              if (state is LoginInitialState) {
+                if (state.error != null) {
+                  AppUtils.showToast(state.error);
+                }
+              }
             },
+            child: BlocBuilder<LoginBloc, LoginState>(
+              bloc: loginBloc,
+              builder: (BuildContext context, LoginState state) {
+                return ListView(
+                  children: <Widget>[
+                    SizedBox(height: 100),
+                    Image.asset(
+                      ImageResource.appIcon,
+                      width: 171,
+                      height: 184,
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 42, vertical: 42),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          CustomText(
+                            text: StringResource.emailText,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          CustomTextField(
+                            icon: Icons.mail_outline,
+                            keyboardType: TextInputType.emailAddress,
+                            controller: loginBloc.usernameController,
+                          ),
+                          SizedBox(height: 8),
+                          CustomText(
+                            text: StringResource.passwordText,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          CustomTextField(
+                            icon: Icons.lock_outline,
+                            obscureText: true,
+                            controller: loginBloc.passwordController,
+                          ),
+                          SizedBox(height: 30),
+                          Center(
+                            child: (state is LoginLoadingState)
+                                ? CircularProgressIndicator()
+                                : PrimaryButton(
+                                    buttonText: StringResource.signInText,
+                                    onPressed: onLoginButtonPressed,
+                                  ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -116,11 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void onLoginButtonPressed() async {
-    loginBloc.add(
-      LoginButtonPressedEvent(
-        email: usernameController.text,
-        password: passwordController.text,
-      ),
-    );
+    loginBloc.add(LoginButtonPressedEvent());
   }
 }

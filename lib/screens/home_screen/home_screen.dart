@@ -142,39 +142,40 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget drawerHeader() {
     return BlocBuilder<AppBloc, AppState>(
-        bloc: appBloc,
-        builder: (BuildContext context, AppState state) {
-          return Container(
-            height: 190,
-            child: DrawerHeader(
-              child: Column(
-                children: <Widget>[
-                  Image.asset(
-                    ImageResource.appIcon,
-                    width: 100,
-                    height: 110,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(height: 24),
-                  CustomText(
-                    text: appBloc.username,
-                    style: GoogleFonts.quicksand(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              ),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(ImageResource.bgImage),
+      bloc: appBloc,
+      builder: (BuildContext context, AppState state) {
+        return Container(
+          height: 190,
+          child: DrawerHeader(
+            child: Column(
+              children: <Widget>[
+                Image.asset(
+                  ImageResource.appIcon,
+                  width: 100,
+                  height: 110,
                   fit: BoxFit.cover,
                 ),
+                SizedBox(height: 24),
+                CustomText(
+                  text: appBloc.username,
+                  style: GoogleFonts.quicksand(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(ImageResource.bgImage),
+                fit: BoxFit.cover,
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Widget drawerItem(int itemIndex, int selectedIndex, String title,

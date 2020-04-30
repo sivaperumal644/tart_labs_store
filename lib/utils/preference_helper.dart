@@ -40,7 +40,7 @@ class PreferenceHelper {
     preferences.setString("username", name);
   }
 
-  static clearToken() async {
+  static clearStorage() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
   }

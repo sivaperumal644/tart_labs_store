@@ -1,17 +1,19 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:tart_labs_store/authentication/authentication_bloc.dart';
-import 'package:tart_labs_store/authentication/authentication_events.dart';
-import 'package:tart_labs_store/models/token.dart';
+import 'package:tart_labs_store/authentication/authentication_event.dart';
 import 'package:tart_labs_store/repositories/login_repository.dart';
 import 'package:tart_labs_store/repositories/profile_repository.dart';
 import 'package:tart_labs_store/responses/profile_response.dart';
+import 'package:tart_labs_store/responses/token_response.dart';
 import 'package:tart_labs_store/screens/login_screen/bloc/login_event.dart';
 import 'package:tart_labs_store/screens/login_screen/bloc/login_state.dart';
-import 'package:tart_labs_store/utils/app_utils.dart';
 import 'package:tart_labs_store/utils/preference_helper.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationBloc authenticationBloc;
+  final usernameController = new TextEditingController();
+  final passwordController = new TextEditingController();
 
   LoginBloc(this.authenticationBloc);
 
@@ -23,23 +25,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginButtonPressedEvent) {
       yield LoginLoadingState();
       try {
-        Token token = await LoginRepository.authenticate(
-          event.email,
-          event.password,
+        TokenResponse tokenResponse = await LoginRepository.authenticate(
+          usernameController.text,
+          passwordController.text,
         );
-        if (token != null) {
-          PreferenceHelper.saveToken(token);
-          ProfileResponse profileResponse = await ProfileRepository.getUser();
-          if (profileResponse.error != null)
-            AppUtils.showToast(profileResponse.error);
-          else
-            PreferenceHelper.saveName(profileResponse.user.name);
-          authenticationBloc.add(AuthenticationLoggedInEvent());
+        if (tokenResponse.error != null) {
+          yield LoginInitialState(error: tokenResponse.error);
         } else {
-          yield LoginFailedState("Login Failed");
+          PreferenceHelper.saveToken(tokenResponse.getToken());
+          ProfileResponse profileResponse = await ProfileRepository.getUser();
+          if (profileResponse.error != null) {
+            yield LoginInitialState(error: tokenResponse.error);
+          } else {
+            PreferenceHelper.saveName(profileResponse.user.name);
+            authenticationBloc.add(AuthenticationLoggedInEvent());
+          }
         }
       } catch (error) {
-        yield LoginFailedState(error.toString());
+        yield LoginInitialState();
       }
     }
   }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tart_labs_store/authentication/authentication_bloc.dart';
-import 'package:tart_labs_store/authentication/authentication_events.dart';
+import 'package:tart_labs_store/authentication/authentication_event.dart';
 import 'package:tart_labs_store/routes.dart';
-import 'package:tart_labs_store/screens/splash_screen.dart';
 
 main() => runApp(
       BlocProvider<AuthenticationBloc>(
@@ -31,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: getRoute,
       home: addAuthBloc(
         context,
-        SplashScreen(),
+        Container(),
       ),
     );
   }

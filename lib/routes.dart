@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tart_labs_store/authentication/authentication_bloc.dart';
-import 'package:tart_labs_store/authentication/authentication_states.dart';
+import 'package:tart_labs_store/authentication/authentication_state.dart';
 import 'package:tart_labs_store/screens/detail_screen/app_detail_screen.dart';
 import 'package:tart_labs_store/screens/detail_screen/bloc/app_detail_bloc.dart';
 import 'package:tart_labs_store/screens/detail_screen/bloc/app_detail_event.dart';

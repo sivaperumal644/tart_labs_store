@@ -1,23 +1,22 @@
 import 'package:tart_labs_store/utils/base_equatable.dart';
 
-class AuthenticationEvents extends BaseEquatable {}
+class AuthenticationEvent extends BaseEquatable {}
 
-class AppStartedEvent extends AuthenticationEvents {
+class AppStartedEvent extends AuthenticationEvent {
   @override
   String toString() {
     return "AppStartedEvent";
   }
 }
 
-
-class AuthenticationLoggedInEvent extends AuthenticationEvents {
+class AuthenticationLoggedInEvent extends AuthenticationEvent {
   @override
   String toString() {
     return "AuthenticationLoggedInEvent";
   }
 }
 
-class AuthenticationLoggedOutEvent extends AuthenticationEvents {
+class AuthenticationLoggedOutEvent extends AuthenticationEvent {
   @override
   String toString() {
     return "AuthenticationLoggedOutEvent";

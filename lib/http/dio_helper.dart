@@ -48,18 +48,21 @@ class DioHelper {
               case 401:
                 logOut();
                 return error;
-                break;
-              case 400:
-                AppUtils.showToast("Invalid username or password");
-                break;
               case 500:
-                AppUtils.showToast("Server error, try again later");
+                AppUtils.showToast("500, server broken");
                 break;
               case 404:
-                AppUtils.showToast("404 error");
+                AppUtils.showToast("404 Forbidden");
                 break;
               case 403:
-                AppUtils.showToast("Your not authorized");
+                AppUtils.showToast("403 Forbidden");
+                break;
+              case 405:
+                AppUtils.showToast("Method Not allowed");
+                break;
+              case 429:
+                AppUtils.showToast(
+                    "Too many requests - ${error.request.uri.toString()}");
                 break;
             }
           } else if (error.type == DioErrorType.DEFAULT) {
@@ -93,7 +96,7 @@ class DioHelper {
   }
 
   logOut() {
-    PreferenceHelper.clearToken();
+    PreferenceHelper.clearStorage();
     Get.off(LoginScreen());
   }
 }

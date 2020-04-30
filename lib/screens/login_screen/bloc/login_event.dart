@@ -7,12 +7,4 @@ class LoginButtonPressedEvent extends LoginEvent {
   String toString() {
     return "LoginButtonPressedEvent";
   }
-
-  final String email;
-  final String password;
-
-  LoginButtonPressedEvent({
-    this.email,
-    this.password,
-  });
 }

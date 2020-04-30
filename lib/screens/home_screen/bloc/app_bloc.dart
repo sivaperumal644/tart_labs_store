@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:tart_labs_store/authentication/authentication_bloc.dart';
-import 'package:tart_labs_store/authentication/authentication_events.dart';
+import 'package:tart_labs_store/authentication/authentication_event.dart';
 import 'package:tart_labs_store/models/app.dart';
 import 'package:tart_labs_store/repositories/apps_repository.dart';
 import 'package:tart_labs_store/responses/app_response.dart';
