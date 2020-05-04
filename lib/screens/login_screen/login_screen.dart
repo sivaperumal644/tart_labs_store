@@ -29,6 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     loginBloc.close();
+    loginBloc.usernameController.dispose();
+    loginBloc.passwordController.dispose();
     super.dispose();
   }
 

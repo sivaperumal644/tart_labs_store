@@ -73,8 +73,11 @@ buildLoginScreen() {
 
 buildAppDetailScreen(RouteSettings settings) {
   return MaterialPageRoute(
-      builder: (context) =>
-          addAuthBloc(context, PageBuilder.buildAppDetailScreenPage(settings)));
+    builder: (context) => addAuthBloc(
+      context,
+      PageBuilder.buildAppDetailScreenPage(settings),
+    ),
+  );
 }
 
 buildHomeScreen() {
